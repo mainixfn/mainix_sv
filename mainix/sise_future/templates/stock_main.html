@@ -1,0 +1,141 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Mainix.net</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+  <script type="text/javascript" src ="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script type="text/javascript">
+      setInterval("my_function();",10000);
+      function my_function(){
+        $('#refresh').load(location.href + ' #table');
+      }
+  </script>
+</head>
+<body>
+<nav class="navbar navbar-expand-md navbar-dark bg-dark mb-3">
+    <div class="container">
+        <a href="#" class="navbar-brand mr-3">
+            <img alt ="Mainix" src ='{%static "img/MAINIXLOGO.png"%}' height="28" >
+            Mainix . net</a>
+        <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <div class="navbar-nav">
+                <a href="/" class="nav-item nav-link active">Home</a>
+                <a href="/stock" class="nav-item nav-link"></a>
+                <a href="#" class="nav-item nav-link"></a>
+                <a href="#" class="nav-item nav-link"></a>
+            </div>
+        </div>
+
+    </div>
+</nav>
+
+<div class="container">
+  <div id ="refresh">
+    <div id = "table">
+    <h2>해외 주요 지수 야간 선물</h2>
+      <table class="table table-bordered">
+       <thead>
+              <tr>
+                <th>인덱스명</th>
+                <th>지수</th>
+                <th>등락</th>
+                <th>시간</th>
+              </tr>
+     </thead>
+        <tbody>
+              {% for signal in america_index %}
+              <tr>
+                  <td>{{signal.market}}</td>
+                  <td>{{signal.indice}}</td>
+                  <td>
+                    {% if signal.rate > 0 %}
+                      <p class="text-danger"> +{{signal.rate}}%</p>
+                    {% elif signal.rate < 0 %}
+                       <p class="text-primary">{{signal.rate}}%</p>
+                    {% else %}
+                       <p>{{signal.rate}}</p>
+                    {% endif %}
+                  </td>
+                  <td>{{signal.time}}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+      </table>
+    <h2>국내 주요 지수</h2>
+        <table class="table table-bordered">
+       <thead>
+              <tr>
+                <th>인덱스명</th>
+                <th>지수</th>
+                <th>등락</th>
+                <th>시간</th>
+              </tr>
+     </thead>
+        <tbody>
+              {% for signal in korea_index %}
+              <tr>
+                  <td>{{signal.market}}</td>
+                  <td>{{signal.indice}}</td>
+                  <td>
+                    {% if signal.rate > 0 %}
+                      <p class="text-danger"> +{{signal.rate}}%</p>
+                    {% elif signal.rate < 0 %}
+                       <p class="text-primary">{{signal.rate}}%</p>
+                    {% else %}
+                       <p>{{signal.rate}}</p>
+                    {% endif %}
+                  </td>
+                  <td>{{signal.time}}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+      </table>
+
+    <h2> 추천 종목 </h2>
+      <table class="table table-bordered">
+        <thead>
+              <tr>
+                <th>종 목 명</th>
+                <th>가 격</th>
+                <th>등 락</th>
+                <th>TIME</th>
+              </tr>
+            </thead>
+        <tbody>
+              {% for signal in t_stock %}
+              <tr>
+                  <td>{{signal.name}}</td>
+                  <td>{{signal.price}}</td>
+                  <td>
+                    {% if signal.rate > 0 %}
+                      <p class="text-danger"> +{{signal.rate}}%</p>
+                    {% elif signal.rate < 0 %}
+                       <p class="text-primary">{{signal.rate}}%</p>
+                    {% else %}
+                       <p>{{signal.rate}}</p>
+
+                    {% endif %}
+                  </td>
+                  <td>{{signal.time}}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+      </table>
+
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
