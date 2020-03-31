@@ -17,6 +17,7 @@ from . import Import_for_Database
 # Create your views here.
 def main(request):
     stock_future =Import_for_Database.stock_future()
+    #save_dt = stock_future.save_t_tock_date()
     america_index = stock_future.america_index()
     korea_index = stock_future.korea_index()
     today_stock = stock_future.Today_Stock()

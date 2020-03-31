@@ -116,15 +116,15 @@
         <tbody>
               {% for signal in t_stock %}
               <tr>
-                  <td>{{signal.name}}</td>
-                  <td>{{signal.price}}</td>
+                  <td>{{signal.stock_name}}</td>
+                  <td>{{signal.sise}}</td>
                   <td>
-                    {% if signal.rate > 0 %}
-                      <p class="text-danger"> +{{signal.rate}}%</p>
+                    {% if signal.dungrak > 0 %}
+                      <p class="text-danger"> +{{signal.dungrak}}%</p>
                     {% elif signal.rate < 0 %}
-                       <p class="text-primary">{{signal.rate}}%</p>
+                       <p class="text-primary">{{signal.dungrak}}%</p>
                     {% else %}
-                       <p>{{signal.rate}}</p>
+                       <p>{{signal.dungrak}}</p>
 
                     {% endif %}
                   </td>

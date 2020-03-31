@@ -1,9 +1,9 @@
 from bs4 import BeautifulSoup
-import urllib.request
 import requests
-import xml.etree.ElementTree as ET
 import pymysql
 import datetime
+import schedule
+
 conn = pymysql.connect(host='dydb.c2x6adsfvww3.ap-northeast-2.rds.amazonaws.com', user='qwasdf123',
                                password='rlarltjq1!', db='stock_db', charset='utf8',
                                cursorclass=pymysql.cursors.DictCursor)
@@ -54,7 +54,7 @@ def stock_naver_sise(stock_name):
 
 def save_t_tock_date():
     #sql 쿼리문
-    insert_sql = "insert into naver_sise(stock_name, sise, dungrak, start_price) values(%s,%s,%s,%s)"
+    insert_sql = "insert into naver_sise(stock_name, sise, dungrak, start_price,time) values(%s,%s,%s,%s,%s)"
     delet_sql = "delete from naver_sise;"
 
     #시간변수
@@ -88,33 +88,31 @@ def save_t_tock_date():
             try:
                 data = stock_naver_sise(n)
                 p = data[0]["sise"]
-                r = data[0]["dungrak"]
+                r = float(data[0]["dungrak"])
                 c = result[i]["count"]
                 s = data[0]["start_price"]
             except:
                 p ="error"
-                r ="error"
+                r = 0
                 c ="error"
                 s ="error"
-            curs.execute(insert_sql, (n, p, r, s))
-
-
-
+            curs.execute(insert_sql, (n, p, r, s,time))
     except:
-        curs.execute(insert_sql, ("None", "None","None", "None"))
+        curs.execute(insert_sql, ("None", "None",0, "None","None"))
     conn.commit()
-    curs.close()
+
     return
+
+
+def job():
+    print("I'm working...")
+
 
 
 
 if __name__=="__main__":
-    print(save_t_tock_date())
+    schedule.every(10).seconds.do(save_t_tock_date)
+    while True:
+        schedule.run_pending()
 
-'''
-url = "http://www.kma.go.kr/weather/forecast/mid-term-rss3.jsp?stnId=108"
-request = urllib.request.urlopen(url)
-xml = request.read()
-soup = BeautifulSoup(xml, "html.parser")
-print(soup.find("location"))
-'''
+
