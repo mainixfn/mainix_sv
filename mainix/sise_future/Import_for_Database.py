@@ -83,7 +83,8 @@ class stock_future():
         no_today = soup.find("p", {"class": "no_today"})
         no_exday = soup.find("p", {"class": "no_exday"})
         sise = no_today.find("span", {"class": "blind"}).text
-
+        price_table = soup.find("table")
+        start_price = price_table.find("span",{"class":"blind"}).text
         try:
             dungrak = no_exday.find_all("em", {"class": "no_up"})[1]
             buho = dungrak.text[1]
@@ -98,7 +99,7 @@ class stock_future():
                 buho = ""
         dungrak = buho + dungrak.find("span", {"class": "blind"}).text
         dungrak = float(dungrak)
-        list.append({"stock_name": stock_name, "sise": sise, "dungrak": dungrak})
+        list.append({"stock_name": stock_name, "sise": sise, "dungrak": dungrak,"start_price":start_price})
         return list
 
     def Stock_name(self):
@@ -147,19 +148,21 @@ class stock_future():
             for i in range(len(result)):
                 n = result[i]["stock_name"]
                 try:
-                    data = self.stock_sise(n)
+                    data = self.stock_naver_sise(n)
                     p = data[0]["sise"]
                     r = data[0]["dungrak"]
                     c = result[i]["count"]
+                    s = data[0]["start_price"]
                 except:
                     p ="error"
                     r ="error"
                     c ="error"
-                today_list.append({"name":n,"price":p,"rate":r,"time":time})
+                    s ="error"
+                today_list.append({"name":n,"price":p,"rate":r,"start_price":s,"time":time})
 
 
         except:
-            today_list.append({"name": "None", "price": "None", "rate": "None", "time": time})
+            today_list.append({"name": "None", "price": "None", "rate": "None","start_price":"None", "time": time})
         self.curs.close()
         return today_list[:20]
 
@@ -173,11 +176,20 @@ class stock_future():
         source = requests.get(url, headers=headers).text  # requests 모듈을 통해 텍스트로 끌어옴
         soup = BeautifulSoup(source, 'html.parser')
         kospi = soup.find("li", {"onmouseover": "moveIndex('tab_sel1')"})
-        kospi_index = kospi.find("span", {"class": "num num2"}).text
-        kospi_dungrak = kospi.find("span", {"class": "num_s num_s2"}).text[-9:-4]
         kosdaq = soup.find("li", {"onmouseover": "moveIndex('tab_sel2')"})
-        kosdaq_index = kosdaq.find("span", {"class": "num"}).text
-        kosdaq_dungrak = kosdaq.find("span", {"class": "num_s"}).text[-9:-4]
+
+        try:
+            kospi_index = kospi.find("span", {"id": "KOSPI_now"}).text
+            kospi_dungrak = kospi.find("span", {"class":"num_s"}).text[-9:-4]
+            kosdaq_index = kosdaq.find("span", {"id": "KOSDAQ_now"}).text
+            kosdaq_dungrak = kosdaq.find("span", {"class": "num_s"}).text[-9:-4]
+
+        except:
+            kospi_index = kospi.find("span", {"class": "num num2"}).text
+            kospi_dungrak = kospi.find("span", {"class": "num_s num_s2"}).text[-9:-4]
+            kosdaq_index = kosdaq.find("span", {"class": "num"}).text
+            kosdaq_dungrak = kosdaq.find("span", {"class": "num_s"}).text[-9:-4]
+
         list.append({"market": "kospi", "indice": kospi_index, "rate": float(kospi_dungrak),"time":time})
         list.append({"market": "kosdaq", "indice": kosdaq_index, "rate": float(kosdaq_dungrak),"time":time})
 
@@ -213,4 +225,5 @@ class stock_future():
 if __name__=="__main__":
     start = datetime.datetime.now()
     stock_future = stock_future()
-    print(stock_future.korea_index())
+    print(stock_future.Today_Stock())
+    #print(stock_future.korea_index())

@@ -109,6 +109,7 @@
                 <th>종 목 명</th>
                 <th>가 격</th>
                 <th>등 락</th>
+                <th>시 가</th>
                 <th>TIME</th>
               </tr>
             </thead>
@@ -127,6 +128,7 @@
 
                     {% endif %}
                   </td>
+                  <td>{{signal.start_price}}</td>
                   <td>{{signal.time}}</td>
               </tr>
               {% endfor %}
