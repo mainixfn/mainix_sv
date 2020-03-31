@@ -121,7 +121,7 @@
                   <td>
                     {% if signal.dungrak > 0 %}
                       <p class="text-danger"> +{{signal.dungrak}}%</p>
-                    {% elif signal.rate < 0 %}
+                    {% elif signal.dungrak < 0 %}
                        <p class="text-primary">{{signal.dungrak}}%</p>
                     {% else %}
                        <p>{{signal.dungrak}}</p>

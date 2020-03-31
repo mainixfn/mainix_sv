@@ -2,14 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e2550919-bb04-438d-a3ed-72366a1c11da" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/mainix/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mainix/sise_future/naver_sise_save.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mainix/sise_future/Import_for_Database.py" beforeDir="false" afterPath="$PROJECT_DIR$/mainix/sise_future/Import_for_Database.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mainix/sise_future/Stock_price.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/mainix/sise_future/templates/stock_main.html" beforeDir="false" afterPath="$PROJECT_DIR$/mainix/sise_future/templates/stock_main.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mainix/sise_future/tests.py" beforeDir="false" afterPath="$PROJECT_DIR$/mainix/sise_future/tests.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mainix/sise_future/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/mainix/sise_future/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -52,7 +48,7 @@
       <recent name="C:\Users\Doyoeng_Desktop\Desktop\python_coding\Mainix_Homepage\mainix\sise_future" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.naver_sise_save">
+  <component name="RunManager" selected="Python.Import_for_Database">
     <configuration name="Import_for_Database" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="Mainix_Homepage" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -139,9 +135,9 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.naver_sise_save" />
         <item itemvalue="Python.Import_for_Database" />
         <item itemvalue="Python.tests" />
+        <item itemvalue="Python.naver_sise_save" />
         <item itemvalue="Python.views" />
       </list>
     </recent_temporary>
@@ -164,22 +160,22 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="638" y="321" key="FileChooserDialogImpl/-1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1585627897993" />
-    <state width="1362" height="218" key="GridCell.Tab.0.bottom" timestamp="1585637723495">
+    <state width="1362" height="218" key="GridCell.Tab.0.bottom" timestamp="1585663920850">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1362" height="218" key="GridCell.Tab.0.bottom/-1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1585637723495" />
-    <state width="1362" height="218" key="GridCell.Tab.0.center" timestamp="1585637723495">
+    <state width="1362" height="218" key="GridCell.Tab.0.bottom/-1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1585663920850" />
+    <state width="1362" height="218" key="GridCell.Tab.0.center" timestamp="1585663920850">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1362" height="218" key="GridCell.Tab.0.center/-1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1585637723495" />
-    <state width="1362" height="218" key="GridCell.Tab.0.left" timestamp="1585637723495">
+    <state width="1362" height="218" key="GridCell.Tab.0.center/-1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1585663920850" />
+    <state width="1362" height="218" key="GridCell.Tab.0.left" timestamp="1585663920850">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1362" height="218" key="GridCell.Tab.0.left/-1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1585637723495" />
-    <state width="1362" height="218" key="GridCell.Tab.0.right" timestamp="1585637723495">
+    <state width="1362" height="218" key="GridCell.Tab.0.left/-1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1585663920850" />
+    <state width="1362" height="218" key="GridCell.Tab.0.right" timestamp="1585663920850">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1362" height="218" key="GridCell.Tab.0.right/-1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1585637723495" />
+    <state width="1362" height="218" key="GridCell.Tab.0.right/-1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1585663920850" />
     <state width="1362" height="270" key="GridCell.Tab.1.bottom" timestamp="1585531133354">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
