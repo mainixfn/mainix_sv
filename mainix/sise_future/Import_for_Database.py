@@ -84,7 +84,8 @@ class stock_future():
         no_exday = soup.find("p", {"class": "no_exday"})
         sise = no_today.find("span", {"class": "blind"}).text
         price_table = soup.find("table")
-        start_price = price_table.find("span",{"class":"blind"}).text
+        start_price = price_table.find_all("td",{"class":"first"})[1]
+        start_price = start_price.find("span",{"class":"blind"}).text
         try:
             dungrak = no_exday.find_all("em", {"class": "no_up"})[1]
             buho = dungrak.text[1]
@@ -225,5 +226,5 @@ class stock_future():
 if __name__=="__main__":
     start = datetime.datetime.now()
     stock_future = stock_future()
-    print(stock_future.Today_Stock())
+    print(stock_future.stock_naver_sise("대교"))
     #print(stock_future.korea_index())
