@@ -11,12 +11,18 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
   <script type="text/javascript" src ="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-  <script type="text/javascript">
+  {% if time > 8 and time < 16 %}
+    <script type="text/javascript">
       setInterval("my_function();",10000);
       function my_function(){
         $('#refresh').load(location.href + ' #table');
       }
-  </script>
+    </script>
+  {% else %}
+    <script type="text/javascript">
+    </script>
+  {% endif %}
+
 </head>
 <body>
 <nav class="navbar navbar-expand-md navbar-dark bg-dark mb-3">
@@ -48,9 +54,9 @@
        <thead>
               <tr>
                 <th>인덱스명</th>
-                <th>지수</th>
-                <th>등락</th>
-                <th>시간</th>
+                <th>지 수</th>
+                <th>등 락</th>
+                <th>뉴욕 시간</th>
               </tr>
      </thead>
         <tbody>

@@ -3,6 +3,7 @@ from django.http import HttpResponse
 import sys
 import os
 import django
+import datetime
 path = os.getcwd() #현재 파일 위치 문자열로 반환
 path = os.path.split(path) #상위폴더위치 찾기 위한 스플릿
 sys.path.append(path[0])#상위폴더위치 sys.path에 등록
@@ -16,10 +17,14 @@ from . import Import_for_Database
 
 # Create your views here.
 def main(request):
+    kst = datetime.timezone(datetime.timedelta(hours=9))
+    today = datetime.datetime.now(kst)
+    time = today.strftime("%H:%M:%S")[:2]
+    time = int(time)
     stock_future =Import_for_Database.stock_future()
     #save_dt = stock_future.save_t_tock_date()
     america_index = stock_future.america_index()
     korea_index = stock_future.korea_index()
     today_stock = stock_future.Today_Stock()
-    context = {'america_index' : america_index,'korea_index':korea_index,'t_stock':today_stock}
+    context = {'america_index' : america_index,'korea_index':korea_index,'t_stock':today_stock,'time':time}
     return render(request,"stock_main.html",context)

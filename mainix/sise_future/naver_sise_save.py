@@ -32,7 +32,10 @@ def stock_naver_sise(stock_name):
     sise = no_today.find("span", {"class": "blind"}).text
     price_table = soup.find("table")
     start_price = price_table.find_all("td", {"class": "first"})[1]
-    start_price = start_price.find("span", {"class": "blind"}).text
+    try:
+        start_price = start_price.find("span", {"class": "blind"}).text
+    except:
+        start_price = start_price.find("span", {"class": "no0"}).text
     try:
         dungrak = no_exday.find_all("em", {"class": "no_up"})[1]
         buho = dungrak.text[1]
@@ -50,7 +53,7 @@ def stock_naver_sise(stock_name):
 
     list.append({"stock_name": stock_name, "sise": sise, "dungrak": dungrak, "start_price": start_price})
 
-    return list
+    return start_price
 
 def save_t_tock_date():
     #sql 쿼리문
@@ -111,8 +114,13 @@ def job():
 
 
 if __name__=="__main__":
+
+    print(stock_naver_sise("힘스"))
+
+    #네이버시세를 주기적으로 저장
+    '''
     schedule.every(10).seconds.do(save_t_tock_date)
     while True:
         schedule.run_pending()
-
+    '''
 

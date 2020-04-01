@@ -39,7 +39,10 @@ class stock_future():
         sise = no_today.find("span", {"class": "blind"}).text
         price_table = soup.find("table")
         start_price = price_table.find_all("td", {"class": "first"})[1]
-        start_price = start_price.find("span", {"class": "blind"}).text
+        try:
+            start_price = start_price.find("span", {"class": "blind"}).text
+        except:
+            start_price = start_price.find("span", {"class": "no0"}).text
         try:
             dungrak = no_exday.find_all("em", {"class": "no_up"})[1]
             buho = dungrak.text[1]
@@ -77,7 +80,8 @@ class stock_future():
 
     def Today_Stock(self):
         # 시간변수
-        today = datetime.datetime.today()
+        kst = datetime.timezone(datetime.timedelta(hours=9))
+        today = datetime.datetime.now(kst)
         yester_day = today - datetime.timedelta(days=1)
         time = today.strftime("%H:%M:%S")
         today = today.strftime("%Y%m%d")
@@ -85,24 +89,25 @@ class stock_future():
 
         today_list = []
         # db에서 t_stock call
+
         try:
-            try:
-                call_sql = "select stock_name , count from blog_stock_" + today
-                self.curs.execute(call_sql)
-            except:
-                call_sql = "select stock_name , count from blog_stock_" + yester_day
-                self.curs.execute(call_sql)
+            call_sql = "select stock_name , count from blog_stock_" + today
+            self.curs.execute(call_sql)
+        except:
+            call_sql = "select stock_name , count from blog_stock_" + yester_day
+            self.curs.execute(call_sql)
 
-            response = self.curs.fetchall()
-            result = []
-            for j in range(len(response)):
-                if int(response[j]["count"]) > 4:
-                    result.append(response[j])
-                else:
-                    pass
+        response = self.curs.fetchall()
+        result = []
+        for j in range(len(response)):
+            if int(response[j]["count"]) > 4:
+                result.append(response[j])
+            else:
+                pass
 
-            for i in range(len(result)):
-                n = result[i]["stock_name"]
+        for i in range(len(result)):
+            n = result[i]["stock_name"]
+            if int(time[:2]) > 8 and int(time[:2]) < 17:
                 try:
                     data = self.stock_naver_sise(n)
                     p = data[0]["sise"]
@@ -115,14 +120,17 @@ class stock_future():
                     c = "error"
                     s = "error"
                 today_list.append({"stock_name":n, "sise":p, "dungrak":r, "start_price":s,"time":time})
-        except:
-            today_list.append({"stock_name":"None", "sise":"None", "dungrak":0, "start_price":"None","time":time})
+            else:
+                today_list.append({"stock_name":n, "sise":0, "dungrak":0, "start_price":0,"time":"장마감"})
+
         return today_list
 
     def korea_index(self):
-        today = datetime.datetime.today()
+        kst = datetime.timezone(datetime.timedelta(hours=9))
+        today = datetime.datetime.now(kst)
         time = today.strftime("%H:%M:%S")
         list = []
+
         user_agent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.146 Whale/2.6.90.18 Safari/537.36'
         headers = {'User-Agent': user_agent}
         url = "https://finance.naver.com/sise/"
@@ -142,15 +150,21 @@ class stock_future():
             kospi_dungrak = kospi.find("span", {"class": "num_s num_s2"}).text[-9:-4]
             kosdaq_index = kosdaq.find("span", {"class": "num"}).text
             kosdaq_dungrak = kosdaq.find("span", {"class": "num_s"}).text[-9:-4]
-
-        list.append({"market": "kospi", "indice": kospi_index, "rate": float(kospi_dungrak),"time":time})
-        list.append({"market": "kosdaq", "indice": kosdaq_index, "rate": float(kosdaq_dungrak),"time":time})
+        if int(time[:2]) > 8 and int(time[:2]) < 17:
+            list.append({"market": "kospi", "indice": kospi_index, "rate": float(kospi_dungrak),"time":time})
+            list.append({"market": "kosdaq", "indice": kosdaq_index, "rate": float(kosdaq_dungrak),"time":time})
+        else:
+            list.append({"market": "kospi", "indice": kospi_index, "rate": float(kospi_dungrak), "time": "장마감"})
+            list.append({"market": "kosdaq", "indice": kosdaq_index, "rate": float(kosdaq_dungrak), "time": "장마감"})
 
         return list
 
 
     #다우,나스닥 선물 지수
     def america_index(self):
+        america = datetime.timezone(datetime.timedelta(hours=-4))
+        today = datetime.datetime.now(america)
+        time = today.strftime("%H:%M:%S")
         url ="https://kr.investing.com/indices/indices-futures"
         source = requests.get(url, headers=self.headers).text  # requests 모듈을 통해 텍스트로 끌어옴
         soup = BeautifulSoup(source, 'html.parser')
@@ -168,8 +182,7 @@ class stock_future():
                 rate = rate[1:-1]
             else:
                 rate = rate[:-1]
-            time = data[17].get_text()
-            time = data[17].get_text()
+
             future_current.append({'market':market ,"indice":indice,'rate' : float(rate), "time" : time})
         result = future_current[:3]
 

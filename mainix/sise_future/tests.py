@@ -155,6 +155,10 @@ def blog_multi_and_dbSave(keyword):
     return keyword + " Blog Bigdata Analysis for Stock Save Complete"
 
 if __name__=="__main__":
-    kst = datetime.timezone(datetime.timedelta(hours=0))
-    today = datetime.datetime.now(kst)
-    print(today)
+    america = datetime.timezone(datetime.timedelta(hours=-4))
+    today = datetime.datetime.now(america)
+    yester_day = today - datetime.timedelta(days=1)
+    time = today.strftime("%H:%M:%S")
+    today = today.strftime("%Y%m%d")
+    yester_day = yester_day.strftime("%Y%m%d")
+    print(time)
