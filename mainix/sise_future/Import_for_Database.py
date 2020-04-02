@@ -98,6 +98,7 @@ class stock_future():
             self.curs.execute(call_sql)
 
         response = self.curs.fetchall()
+        response = sorted(response, key=lambda t:(int(t["count"])), reverse=True)[:15]
         result = []
         for j in range(len(response)):
             if int(response[j]["count"]) > 4:
@@ -107,7 +108,7 @@ class stock_future():
 
         for i in range(len(result)):
             n = result[i]["stock_name"]
-            if int(time[:2]) > 8 and int(time[:2]) < 17:
+            if int(time[:2]) > 8 and int(time[:2]) < 16:
                 try:
                     data = self.stock_naver_sise(n)
                     p = data[0]["sise"]
@@ -121,7 +122,18 @@ class stock_future():
                     s = "error"
                 today_list.append({"stock_name":n, "sise":p, "dungrak":r, "start_price":s,"time":time})
             else:
-                today_list.append({"stock_name":n, "sise":0, "dungrak":0, "start_price":0,"time":"장마감"})
+                try:
+                    data = self.stock_naver_sise(n)
+                    p = data[0]["sise"]
+                    r = float(data[0]["dungrak"])
+                    c = result[i]["count"]
+                    s = data[0]["start_price"]
+                except:
+                    p = "error"
+                    r = 0
+                    c = "error"
+                    s = "error"
+                today_list.append({"stock_name":n, "sise":p, "dungrak":0, "start_price":'-',"time":"장마감"})
 
         return today_list
 
@@ -165,26 +177,45 @@ class stock_future():
         america = datetime.timezone(datetime.timedelta(hours=-4))
         today = datetime.datetime.now(america)
         time = today.strftime("%H:%M:%S")
-        url ="https://kr.investing.com/indices/indices-futures"
-        source = requests.get(url, headers=self.headers).text  # requests 모듈을 통해 텍스트로 끌어옴
-        soup = BeautifulSoup(source, 'html.parser')
-        future = soup.select('#cross_rates_container > table > tbody > tr ')
-        #a= soup.find('#cross_rates_container > table > tbody > tr > td')
-        #print(a)
+        future_current = []
+        if int(time[:2])>8 and int(time[:2])<16 :
+            url ="https://kr.investing.com/indices/major-indices"
+            source = requests.get(url, headers=self.headers).text  # requests 모듈을 통해 텍스트로 끌어옴
+            soup = BeautifulSoup(source, 'html.parser')
+            future = soup.select('table > tbody > tr ')[3:6]
+            for i in future:
+                data = list(i)
+                market = data[3].text
+                index = data[5].text
+                rate = data[13].text
+                if rate[0] == "+":
+                    rate = rate[1:-1]
+                else:
+                    rate = rate[:-1]
+                future_current.append({'market': market, "indice": index, 'rate': float(rate), "time": time})
 
-        future_current=[]
-        for i in future:
-            data =list(i)
-            market =data[3].get_text()
-            indice = data[7].get_text()
-            rate = data[15].get_text()
-            if rate[0] == "+":
-                rate = rate[1:-1]
-            else:
-                rate = rate[:-1]
+        else:
+            url ="https://kr.investing.com/indices/indices-futures"
+            source = requests.get(url, headers=self.headers).text  # requests 모듈을 통해 텍스트로 끌어옴
+            soup = BeautifulSoup(source, 'html.parser')
+            future = soup.select('#cross_rates_container > table > tbody > tr ')[:3]
+            #a= soup.find('#cross_rates_container > table > tbody > tr > td')
+            #print(a)
 
-            future_current.append({'market':market ,"indice":indice,'rate' : float(rate), "time" : time})
-        result = future_current[:3]
+
+            for i in future:
+                data =list(i)
+                market =data[3].get_text()
+                index = data[7].get_text()
+                rate = data[15].get_text()
+                if rate[0] == "+":
+                    rate = rate[1:-1]
+                else:
+                    rate = rate[:-1]
+                future_current.append({'market': market, "indice": index, 'rate': float(rate), "time": time})
+
+
+        result = future_current
 
         return  result
 

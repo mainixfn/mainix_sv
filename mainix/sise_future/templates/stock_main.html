@@ -13,13 +13,15 @@
   <script type="text/javascript" src ="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   {% if time > 8 and time < 16 %}
     <script type="text/javascript">
-      setInterval("my_function();",10000);
-      function my_function(){
-        $('#refresh').load(location.href + ' #table');
-      }
+       setInterval("table1();",10000);
+       function table1(){
+         $('#refresh').load(location.href + ' #table1');
+       }
+
     </script>
   {% else %}
     <script type="text/javascript">
+
     </script>
   {% endif %}
 
@@ -48,8 +50,12 @@
 
 <div class="container">
   <div id ="refresh">
-    <div id = "table">
-    <h2>해외 주요 지수 야간 선물</h2>
+    <div id = "table1">
+    {% if time > 8 and time < 23 %}
+        <h2>미국 주요 지수 야간 </h2>
+    {% else %}
+        <h2>미국 주요 지수 </h2>
+    {% endif %}
       <table class="table table-bordered">
        <thead>
               <tr>
@@ -58,7 +64,7 @@
                 <th>등 락</th>
                 <th>뉴욕 시간</th>
               </tr>
-     </thead>
+        </thead>
         <tbody>
               {% for signal in america_index %}
               <tr>
@@ -78,6 +84,7 @@
               {% endfor %}
             </tbody>
       </table>
+
     <h2>국내 주요 지수</h2>
         <table class="table table-bordered">
        <thead>
@@ -140,8 +147,8 @@
               {% endfor %}
             </tbody>
       </table>
-
     </div>
+
   </div>
 </div>
 
