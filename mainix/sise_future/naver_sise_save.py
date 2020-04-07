@@ -19,7 +19,6 @@ def stock_code( stock_name):
     return result
 
 def stock_naver_sise(stock_name):
-
     list = []
     code = stock_code(stock_name)
     user_agent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.146 Whale/2.6.90.18 Safari/537.36'

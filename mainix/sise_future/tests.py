@@ -155,16 +155,6 @@ def blog_multi_and_dbSave(keyword):
     return keyword + " Blog Bigdata Analysis for Stock Save Complete"
 
 if __name__=="__main__":
-    user_agent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.146 Whale/2.6.90.18 Safari/537.36'
-    headers = {'User-Agent': user_agent}
-    url = "https://kr.investing.com/indices/major-indices"
-    source = requests.get(url, headers=headers).text  # requests 모듈을 통해 텍스트로 끌어옴
-    soup = BeautifulSoup(source, 'html.parser')
-    future = soup.select('table > tbody > tr ')[3:6]
-    for i in future:
-        data = list(i)
-        n = data[3].text
-        index = data[5].text
-        rate = data[13].text
-
-        print(n ,index,rate)
+    today = datetime.datetime.now()
+    today = today.weekday()
+    print(today)

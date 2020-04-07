@@ -22,7 +22,6 @@ def main(request):
     time = today.strftime("%H:%M:%S")[:2]
     time = int(time)
     stock_future =Import_for_Database.stock_future()
-    #save_dt = stock_future.save_t_tock_date()
     america_index = stock_future.america_index()
     korea_index = stock_future.korea_index()
     today_stock = stock_future.Today_Stock()
