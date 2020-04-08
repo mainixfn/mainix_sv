@@ -155,6 +155,9 @@ def blog_multi_and_dbSave(keyword):
     return keyword + " Blog Bigdata Analysis for Stock Save Complete"
 
 if __name__=="__main__":
-    today = datetime.datetime.now()
-    today = today.weekday()
-    print(today)
+    url = "https://kr.investing.com/currencies/usd-krw"
+    source = requests.get(url, headers=headers).text  # requests 모듈을 통해 텍스트로 끌어옴
+    soup = BeautifulSoup(source, 'html.parser')
+    dollar = soup.find("div",{"class":"top bold inlineblock"})
+    rate = dollar.select("span")
+    print(rate[3].get_text())

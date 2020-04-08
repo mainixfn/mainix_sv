@@ -110,6 +110,54 @@
             </tbody>
       </table>
 
+    <h2>시장 지표 </h2>
+        <table class="table table-bordered">
+         <thead>
+              <tr>
+                <th>Market</th>
+                <th>Index</th>
+                <th>등락</th>
+                <th>시간</th>
+              </tr>
+     </thead>
+        <tbody>
+              {% for signal in usd_exchange %}
+              <tr>
+                  <td>{{signal.market}}</td>
+                  <td>{{signal.indice}}</td>
+                  <td>
+                    {% if signal.rate > 0 %}
+                      <p class="text-danger"> +{{signal.rate}}%</p>
+                    {% elif signal.rate < 0 %}
+                       <p class="text-primary">{{signal.rate}}%</p>
+                    {% else %}
+                       <p>{{signal.rate}}</p>
+                    {% endif %}
+                  </td>
+                  <td>{{signal.time}}</td>
+              </tr>
+              {% endfor %}
+              {% for signal in wti %}
+              <tr>
+                  <td>{{signal.market}}</td>
+                  <td>{{signal.indice}}</td>
+                  <td>
+                    {% if signal.rate > 0 %}
+                      <p class="text-danger"> +{{signal.rate}}%</p>
+                    {% elif signal.rate < 0 %}
+                       <p class="text-primary">{{signal.rate}}%</p>
+                    {% else %}
+                       <p>{{signal.rate}}</p>
+                    {% endif %}
+                  </td>
+                  <td>{{signal.time}}</td>
+              </tr>
+              {% endfor %}
+
+
+            </tbody>
+      </table>
+
     <h2> 추천 종목 </h2>
       <table class="table table-bordered">
         <thead>

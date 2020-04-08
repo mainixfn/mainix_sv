@@ -25,5 +25,8 @@ def main(request):
     america_index = stock_future.america_index()
     korea_index = stock_future.korea_index()
     today_stock = stock_future.Today_Stock()
-    context = {'america_index' : america_index,'korea_index':korea_index,'t_stock':today_stock,'time':time}
+    wti_index = stock_future.wti_future()
+    usd_exchange = stock_future.usd_exchange()
+    context = {'america_index' : america_index,'korea_index':korea_index,'t_stock':today_stock,
+               "usd_exchange":usd_exchange,"wti":wti_index,'time':time}
     return render(request,"stock_main.html",context)

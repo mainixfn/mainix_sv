@@ -16,13 +16,11 @@ class stock_future():
         self.user_agent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.146 Whale/2.6.90.18 Safari/537.36'
         self.headers = {'User-Agent': self.user_agent}
 
-
     def stock_code(self,stock_name):
         stock_code_sql = "select stock_code from stock_name where stock_name='"+stock_name+"'"
         self.curs.execute(stock_code_sql)
         result =self.curs.fetchall()[0]["stock_code"]
         return result
-
 
     # 네이버에서 실시간  시세크롤링 / 실시간 반영 / 신호속도 느림
     def stock_naver_sise(self,stock_name):
@@ -69,7 +67,6 @@ class stock_future():
             n = re[i]['stock_name']
             name_list.append(n)
         return name_list
-
 
     def Thema_Stock(self,stock):
         sql ='select thema from stock_thema where stock_name=%s'
@@ -179,18 +176,17 @@ class stock_future():
             kosdaq_dungrak = kosdaq.find("span", {"class": "num_s"}).text[-9:-4]
 
         if weekday > 4:
-            list.append({"market": "kospi", "indice": kospi_index, "rate": float(kospi_dungrak), "time": "장마감"})
-            list.append({"market": "kosdaq", "indice": kosdaq_index, "rate": float(kosdaq_dungrak), "time": "장마감"})
+            list.append({"market": "코스피", "indice": kospi_index, "rate": float(kospi_dungrak), "time": "장마감"})
+            list.append({"market": "코스닥", "indice": kosdaq_index, "rate": float(kosdaq_dungrak), "time": "장마감"})
 
         elif int(time[:2]) > 8 and int(time[:2]) < 17:
-            list.append({"market": "kospi", "indice": kospi_index, "rate": float(kospi_dungrak),"time":time})
-            list.append({"market": "kosdaq", "indice": kosdaq_index, "rate": float(kosdaq_dungrak),"time":time})
+            list.append({"market": "코스피", "indice": kospi_index, "rate": float(kospi_dungrak),"time":time})
+            list.append({"market": "코스닥", "indice": kosdaq_index, "rate": float(kosdaq_dungrak),"time":time})
         else:
-            list.append({"market": "kospi", "indice": kospi_index, "rate": float(kospi_dungrak), "time": "장마감"})
-            list.append({"market": "kosdaq", "indice": kosdaq_index, "rate": float(kosdaq_dungrak), "time": "장마감"})
+            list.append({"market": "코스피", "indice": kospi_index, "rate": float(kospi_dungrak), "time": "장마감"})
+            list.append({"market": "코스닥", "indice": kosdaq_index, "rate": float(kosdaq_dungrak), "time": "장마감"})
 
         return list
-
 
     #다우,나스닥 선물 지수
     def america_index(self):
@@ -253,11 +249,98 @@ class stock_future():
                 else:
                     rate = rate[:-1]
                 future_current.append({'market': market, "indice": index, 'rate': float(rate), "time": time})
-
-
         result = future_current
+        return result
 
-        return  result
+    def wti_future(self):
+        kst = datetime.timezone(datetime.timedelta(hours=9))
+        today = datetime.datetime.now(kst)
+        weekday = today.weekday()
+        time = today.strftime("%H:%M:%S")
+        wti_future = []
+
+        if weekday > 4 :
+            url = "https://kr.investing.com/commodities/real-time-futures"
+            source = requests.get(url, headers=self.headers).text  # requests 모듈을 통해 텍스트로 끌어옴
+            soup = BeautifulSoup(source, 'html.parser')
+            wti = soup.select('#cross_rates_container > table > tbody > tr ')[6]
+            future_li = []
+            wti = list(wti)
+            market = wti[3].get_text()
+            index = wti[7].get_text()
+            rate = wti[15].get_text()
+            if rate[0] == "+":
+                rate = rate[1:-1]
+            else:
+                rate = rate[:-1]
+            wti_future.append({'market': market, "indice": index, 'rate': 'None', "time": "장마감"})
+        else:
+            url = "https://kr.investing.com/commodities/real-time-futures"
+            source = requests.get(url, headers=self.headers).text  # requests 모듈을 통해 텍스트로 끌어옴
+            soup = BeautifulSoup(source, 'html.parser')
+            wti = soup.select('#cross_rates_container > table > tbody > tr ')[6]
+            future_li = []
+            wti = list(wti)
+            market = wti[3].get_text()
+            index = wti[7].get_text()
+            rate = wti[15].get_text()
+            if rate[0] == "+":
+                rate = rate[1:-1]
+            else:
+                rate = rate[:-1]
+            wti_future.append({'market': market, "indice": index, 'rate': float(rate) , "time": time})
+
+            return wti_future
+
+    def usd_exchange(self):
+        kst = datetime.timezone(datetime.timedelta(hours=9))
+        today = datetime.datetime.now(kst)
+        weekday = today.weekday()
+        time = today.strftime("%H:%M:%S")
+        usd_exchange = []
+
+        if weekday > 4:
+            url = "https://kr.investing.com/currencies/usd-krw"
+            source = requests.get(url, headers=self.headers).text  # requests 모듈을 통해 텍스트로 끌어옴
+            soup = BeautifulSoup(source, 'html.parser')
+            dollar = soup.find("div", {"class": "top bold inlineblock"})
+            dollar = dollar.select("span")
+            market = "USD 환율"
+            exchange = dollar[0].get_text()
+            rate = dollar[3].get_text()
+            if rate[0] == "+":
+                rate = rate[1:-1]
+            else:
+                rate = rate[:-1]
+            usd_exchange.append({'market': market, "indice": exchange, 'rate': 'None', "time": "장마감"})
+        else:
+            url = "https://kr.investing.com/currencies/usd-krw"
+            source = requests.get(url, headers=self.headers).text  # requests 모듈을 통해 텍스트로 끌어옴
+            soup = BeautifulSoup(source, 'html.parser')
+            dollar = soup.find("div", {"class": "top bold inlineblock"})
+            dollar = dollar.select("span")
+            market = "USD 환율"
+            exchange = dollar[0].get_text()
+            rate = dollar[3].get_text()
+            if rate[0] == "+":
+                rate = rate[1:-1]
+            else:
+                rate = rate[:-1]
+            usd_exchange.append({'market': market, "indice": exchange, 'rate':float(rate), "time": time})
+        return usd_exchange
+
+
+
+
+if __name__=="__main__":
+    start = datetime.datetime.now()
+    stock_future = stock_future()
+    print(stock_future.usd_exchange())
+    #print(stock_future.korea_index())
+
+
+
+
 
 
 '''
@@ -362,8 +445,3 @@ class stock_future():
 
         return  result
 '''
-if __name__=="__main__":
-    start = datetime.datetime.now()
-    stock_future = stock_future()
-    print(stock_future.Today_Stock())
-    #print(stock_future.korea_index())
