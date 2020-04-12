@@ -2,11 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e2550919-bb04-438d-a3ed-72366a1c11da" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mainix/sise_future/Import_for_Database.py" beforeDir="false" afterPath="$PROJECT_DIR$/mainix/sise_future/Import_for_Database.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mainix/sise_future/templates/stock_main.html" beforeDir="false" afterPath="$PROJECT_DIR$/mainix/sise_future/templates/stock_main.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mainix/sise_future/tests.py" beforeDir="false" afterPath="$PROJECT_DIR$/mainix/sise_future/tests.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mainix/sise_future/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/mainix/sise_future/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

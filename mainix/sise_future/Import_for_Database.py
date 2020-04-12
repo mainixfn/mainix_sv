@@ -195,7 +195,8 @@ class stock_future():
         weekday = today.weekday()
         time = today.strftime("%H:%M:%S")
         future_current = []
-        if weekday > 4 :
+
+        if weekday == 5 : # 뉴욕시간 기준 토요일 장마감
             url = "https://kr.investing.com/indices/indices-futures"
             source = requests.get(url, headers=self.headers).text  # requests 모듈을 통해 텍스트로 끌어옴
             soup = BeautifulSoup(source, 'html.parser')
@@ -214,6 +215,26 @@ class stock_future():
                     rate = rate[:-1]
                 future_current.append({'market': market, "indice": index, 'rate': 0, "time": "장마감"})
 
+        elif weekday == 6 and int(time[:2]) < 17 : # 뉴욕시간 기준 일요일 17시 이전 장마감
+            url = "https://kr.investing.com/indices/indices-futures"
+            source = requests.get(url, headers=self.headers).text  # requests 모듈을 통해 텍스트로 끌어옴
+            soup = BeautifulSoup(source, 'html.parser')
+            future = soup.select('#cross_rates_container > table > tbody > tr ')[:3]
+            # a= soup.find('#cross_rates_container > table > tbody > tr > td')
+            # print(a)
+
+            for i in future:
+                data = list(i)
+                market = data[3].get_text()
+                index = data[7].get_text()
+                rate = data[15].get_text()
+                if rate[0] == "+":
+                    rate = rate[1:-1]
+                else:
+                    rate = rate[:-1]
+                future_current.append({'market': market, "indice": index, 'rate': 0, "time": "장마감"})
+
+        # 뉴욕시간 기준 일요일 17시 ~ 금요일 24시 까지 장운용
         elif int(time[:2])>8 and int(time[:2])<16 :
             url ="https://kr.investing.com/indices/major-indices"
             source = requests.get(url, headers=self.headers).text  # requests 모듈을 통해 텍스트로 끌어옴
