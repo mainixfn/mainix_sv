@@ -112,12 +112,13 @@ class stock_future():
                     r = float(data[0]["dungrak"])
                     c = result[i]["count"]
                     s = data[0]["start_price"]
+                    code = self.stock_code(n)
                 except:
                     p = "error"
                     r = 0
                     c = "error"
                     s = "error"
-                today_list.append({"stock_name":n, "sise":p, "dungrak":0, "start_price":'-',"time":"주 말"})
+                today_list.append({"stock_name":n, "sise":p, "dungrak":0, "start_price":'-',"code":code,"time":"주 말"})
 
             elif weekday < 5 and int(time[:2]) > 8 and int(time[:2]) < 16:
                 try:
@@ -126,12 +127,13 @@ class stock_future():
                     r = float(data[0]["dungrak"])
                     c = result[i]["count"]
                     s = data[0]["start_price"]
+                    code = self.stock_code(n)
                 except:
                     p = "error"
                     r = 0
                     c = "error"
                     s = "error"
-                today_list.append({"stock_name":n, "sise":p, "dungrak":r, "start_price":s,"time":time})
+                today_list.append({"stock_name":n, "sise":p, "dungrak":r, "start_price":s,"code":code,"time":time})
             else:
                 try:
                     data = self.stock_naver_sise(n)
@@ -139,12 +141,13 @@ class stock_future():
                     r = float(data[0]["dungrak"])
                     c = result[i]["count"]
                     s = data[0]["start_price"]
+                    code = self.stock_code(n)
                 except:
                     p = "error"
                     r = 0
                     c = "error"
                     s = "error"
-                today_list.append({"stock_name":n, "sise":p, "dungrak":0, "start_price":'-',"time":"장마감"})
+                today_list.append({"stock_name":n, "sise":p, "dungrak":0, "start_price":'-',"code":code,"time":"장마감"})
 
         return today_list
 
@@ -356,7 +359,7 @@ class stock_future():
 if __name__=="__main__":
     start = datetime.datetime.now()
     stock_future = stock_future()
-    print(stock_future.usd_exchange())
+    print(stock_future.Today_Stock())
     #print(stock_future.korea_index())
 
 

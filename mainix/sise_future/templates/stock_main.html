@@ -172,7 +172,8 @@
         <tbody>
               {% for signal in t_stock %}
               <tr>
-                  <td>{{signal.stock_name}}</td>
+                  <td><a href="https://finance.naver.com/item/main.nhn?code={{signal.code}}" target="_blank">
+                      <p class="text-dark"> {{signal.stock_name}}</p></a></td>
                   <td>{{signal.sise}}</td>
                   <td>
                     {% if signal.dungrak > 0 %}
