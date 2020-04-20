@@ -179,15 +179,15 @@ class stock_future():
             kosdaq_dungrak = kosdaq.find("span", {"class": "num_s"}).text[-9:-4]
 
         if weekday > 4:
-            list.append({"market": "코스피", "indice": kospi_index, "rate": float(kospi_dungrak), "time": "장마감"})
-            list.append({"market": "코스닥", "indice": kosdaq_index, "rate": float(kosdaq_dungrak), "time": "장마감"})
+            list.append({"market": "KOSPI", "indice": kospi_index, "rate": float(kospi_dungrak), "time": "장마감"})
+            list.append({"market": "KOSDAQ", "indice": kosdaq_index, "rate": float(kosdaq_dungrak), "time": "장마감"})
 
         elif int(time[:2]) > 8 and int(time[:2]) < 17:
-            list.append({"market": "코스피", "indice": kospi_index, "rate": float(kospi_dungrak),"time":time})
-            list.append({"market": "코스닥", "indice": kosdaq_index, "rate": float(kosdaq_dungrak),"time":time})
+            list.append({"market": "KOSPI", "indice": kospi_index, "rate": float(kospi_dungrak),"time":time})
+            list.append({"market": "KOSDAQ", "indice": kosdaq_index, "rate": float(kosdaq_dungrak),"time":time})
         else:
-            list.append({"market": "코스피", "indice": kospi_index, "rate": float(kospi_dungrak), "time": "장마감"})
-            list.append({"market": "코스닥", "indice": kosdaq_index, "rate": float(kosdaq_dungrak), "time": "장마감"})
+            list.append({"market": "KOSPI", "indice": kospi_index, "rate": float(kospi_dungrak), "time": "장마감"})
+            list.append({"market": "KOSDAQ", "indice": kosdaq_index, "rate": float(kosdaq_dungrak), "time": "장마감"})
 
         return list
 
@@ -216,7 +216,7 @@ class stock_future():
                     rate = rate[1:-1]
                 else:
                     rate = rate[:-1]
-                future_current.append({'market': market, "indice": index, 'rate': 0, "time": "장마감"})
+                future_current.append({'market': market, "indice": index, 'rate': 0, "time": "장마감","url":url})
 
         elif weekday == 6 and int(time[:2]) < 17 : # 뉴욕시간 기준 일요일 17시 이전 장마감
             url = "https://kr.investing.com/indices/indices-futures"
@@ -235,7 +235,7 @@ class stock_future():
                     rate = rate[1:-1]
                 else:
                     rate = rate[:-1]
-                future_current.append({'market': market, "indice": index, 'rate': 0, "time": "장마감"})
+                future_current.append({'market': market, "indice": index, 'rate': 0, "time": "장마감","url":url})
 
         # 뉴욕시간 기준 일요일 17시 ~ 금요일 24시 까지 장운용
         elif int(time[:2])>8 and int(time[:2])<16 :
@@ -252,7 +252,7 @@ class stock_future():
                     rate = rate[1:-1]
                 else:
                     rate = rate[:-1]
-                future_current.append({'market': market, "indice": index, 'rate': float(rate), "time": time})
+                future_current.append({'market': market, "indice": index, 'rate': float(rate), "time": time,"url":url})
 
         else:
             url ="https://kr.investing.com/indices/indices-futures"
@@ -272,7 +272,7 @@ class stock_future():
                     rate = rate[1:-1]
                 else:
                     rate = rate[:-1]
-                future_current.append({'market': market, "indice": index, 'rate': float(rate), "time": time})
+                future_current.append({'market': market, "indice": index, 'rate': float(rate), "time": time,"url":url})
         result = future_current
         return result
 

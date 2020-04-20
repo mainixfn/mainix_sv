@@ -63,7 +63,10 @@
         <tbody>
               {% for signal in america_index %}
               <tr>
-                  <td>{{signal.market}}</td>
+                  <td><a href="{{signal.url}}" target="_blank">
+                      <p class="text-dark"> {{signal.market}}</p>
+                        </a>
+                  </td>
                   <td>{{signal.indice}}</td>
                   <td>
                     {% if signal.rate > 0 %}
@@ -93,7 +96,8 @@
         <tbody>
               {% for signal in korea_index %}
               <tr>
-                  <td>{{signal.market}}</td>
+                  <td><a href="https://finance.naver.com/sise/sise_index.nhn?code={{signal.market}}" target="_blank">
+                      <p class="text-dark"> {{signal.market}}</p></a></td>
                   <td>{{signal.indice}}</td>
                   <td>
                     {% if signal.rate > 0 %}
@@ -123,7 +127,8 @@
         <tbody>
               {% for signal in usd_exchange %}
               <tr>
-                  <td>{{signal.market}}</td>
+                  <td><a href="https://kr.investing.com/currencies/usd-krw" target="_blank">
+                      <p class="text-dark">{{signal.market}}</p></a></td>
                   <td>{{signal.indice}}</td>
                   <td>
                     {% if signal.rate > 0 %}
@@ -139,7 +144,8 @@
               {% endfor %}
               {% for signal in wti %}
               <tr>
-                  <td>{{signal.market}}</td>
+                  <td><a href="https://kr.investing.com/commodities/crude-oil" target="_blank">
+                      <p class="text-dark"> {{signal.market}}</p></a></td>
                   <td>{{signal.indice}}</td>
                   <td>
                     {% if signal.rate > 0 %}
