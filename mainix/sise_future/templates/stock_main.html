@@ -94,6 +94,7 @@
               </tr>
      </thead>
         <tbody>
+            <!-- 한국 주요지수-->
               {% for signal in korea_index %}
               <tr>
                   <td><a href="https://finance.naver.com/sise/sise_index.nhn?code={{signal.market}}" target="_blank">
@@ -111,7 +112,42 @@
                   <td>{{signal.time}}</td>
               </tr>
               {% endfor %}
+
             </tbody>
+      </table>
+
+    <h2>국내 주요 ETN</h2>
+        <table class="table table-bordered">
+       <thead>
+              <tr>
+                <th>ETN 명 </th>
+                <th>가 격</th>
+                <th>등 락</th>
+                <th>시 간</th>
+              </tr>
+     </thead>
+        <tbody>
+        <!-- 신한 wti etn 지수 -->
+          {% for signal in shinhan %}
+          <tr>
+              <td><a href="https://finance.naver.com/item/main.nhn?code={{signal.code}}" target="_blank">
+                  <p class="text-dark"> {{signal.stock_name}}</p></a></td>
+              <td>{{signal.sise}}</td>
+              <td>
+                {% if signal.dungrak > 0 %}
+                  <p class="text-danger"> +{{signal.dungrak}}%</p>
+                {% elif signal.dungrak < 0 %}
+                   <p class="text-primary">{{signal.dungrak}}%</p>
+                {% else %}
+                   <p>{{signal.dungrak}}</p>
+
+                {% endif %}
+              </td>
+              <td>{{signal.time}}</td>
+          </tr>
+         {% endfor %}
+
+        </tbody>
       </table>
 
     <h2>시장 지표 </h2>
@@ -124,7 +160,9 @@
                 <th>시간</th>
               </tr>
      </thead>
+
         <tbody>
+            <!-- 환율-->
               {% for signal in usd_exchange %}
               <tr>
                   <td><a href="https://kr.investing.com/currencies/usd-krw" target="_blank">
@@ -142,11 +180,12 @@
                   <td>{{signal.time}}</td>
               </tr>
               {% endfor %}
+            <!-- WTI 선물 -->
               {% for signal in wti %}
               <tr>
                   <td><a href="https://kr.investing.com/commodities/crude-oil" target="_blank">
                       <p class="text-dark"> {{signal.market}}</p></a></td>
-                  <td>{{signal.indice}}</td>
+                  <td>{{signal.indice}}$</td>
                   <td>
                     {% if signal.rate > 0 %}
                       <p class="text-danger"> +{{signal.rate}}%</p>

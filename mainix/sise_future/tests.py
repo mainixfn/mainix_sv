@@ -33,6 +33,44 @@ def Thema_Stock(stock):
     re = stock_db_curs.fetchall()
     return re
 
+def stock_naver_sise(stock_name):
+        list = []
+        try:
+            code = stock_code(stock_name)
+        except:
+            code =stock_name
+        user_agent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.146 Whale/2.6.90.18 Safari/537.36'
+        headers = {'User-Agent': user_agent}
+        url = "http://finance.naver.com/item/sise.nhn?code=" + code
+        source = requests.get(url, headers=headers).text  # requests 모듈을 통해 텍스트로 끌어옴
+        soup = BeautifulSoup(source, 'html.parser')
+        no_today = soup.find("p", {"class": "no_today"})
+        no_exday = soup.find("p", {"class": "no_exday"})
+        sise = no_today.find("span", {"class": "blind"}).text
+        price_table = soup.find("table")
+        start_price = price_table.find_all("td", {"class": "first"})[1]
+        try:
+            start_price = start_price.find("span", {"class": "blind"}).text
+        except:
+            start_price = start_price.find("span", {"class": "no0"}).text
+        try:
+            dungrak = no_exday.find_all("em", {"class": "no_up"})[1]
+            buho = dungrak.text[1]
+
+        except:
+            try:
+                dungrak = no_exday.find_all("em", {"class": "no_down"})[1]
+                buho = dungrak.text[1]
+
+            except:
+                dungrak = no_exday.find_all("em", {"class": "X"})[1]
+                buho = ""
+        dungrak = buho + dungrak.find("span", {"class": "blind"}).text
+        dungrak = float(dungrak)
+
+        list.append({"stock_name": stock_name, "sise": sise, "dungrak": dungrak, "start_price": start_price})
+
+        return list
 
 def Naver_Blog_url_word(days,keyword,page_num):
     days = days
@@ -155,9 +193,15 @@ def blog_multi_and_dbSave(keyword):
     return keyword + " Blog Bigdata Analysis for Stock Save Complete"
 
 if __name__=="__main__":
-    url = "https://kr.investing.com/currencies/usd-krw"
+    code =""
+    user_agent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.146 Whale/2.6.90.18 Safari/537.36'
+    headers = {'User-Agent': user_agent}
+    url = "https://finance.naver.com/item/coinfo.nhn?code=500015"
     source = requests.get(url, headers=headers).text  # requests 모듈을 통해 텍스트로 끌어옴
     soup = BeautifulSoup(source, 'html.parser')
-    dollar = soup.find("div",{"class":"top bold inlineblock"})
-    rate = dollar.select("span")
-    print(rate[3].get_text())
+    no_today = soup.find("p", {"class": "no_today"})
+    no_exday = soup.find("p", {"class": "no_exday"})
+    index_value = soup.find("div",{"class":"fixed-table-container-inner"})
+    sise = no_today.find("span", {"class": "blind"}).text
+    price_table = soup.find("table")
+    print(soup)

@@ -11,6 +11,7 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "mainix.mainix.settings")
 django.setup()
 import threading
 from . import Import_for_Database
+#from .Import_for_Database import stock_future
 
 
 
@@ -27,6 +28,8 @@ def main(request):
     today_stock = stock_future.Today_Stock()
     wti_index = stock_future.wti_future()
     usd_exchange = stock_future.usd_exchange()
+    shinhan_wti_etn =stock_future.shinhan_wti()
     context = {'america_index' : america_index,'korea_index':korea_index,'t_stock':today_stock,
-               "usd_exchange":usd_exchange,"wti":wti_index,'time':time}
+               "usd_exchange":usd_exchange,"wti":wti_index,"shinhan":shinhan_wti_etn,'time':time}
     return render(request,"stock_main.html",context)
+
