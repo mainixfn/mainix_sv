@@ -91,66 +91,69 @@ class stock_future():
         # db에서 t_stock call
 
         try:
-            call_sql = "select stock_name , count from blog_stock_" + today
-            self.curs.execute(call_sql)
+            try:
+                call_sql = "select stock_name , count from blog_stock_" + today
+                self.curs.execute(call_sql)
+            except:
+                call_sql = "select stock_name , count from blog_stock_" + yester_day
+                self.curs.execute(call_sql)
+
+            response = self.curs.fetchall()
+            response = sorted(response, key=lambda t:(int(t["count"])), reverse=True)[:15]
+            result = []
+            for j in range(len(response)):
+                if int(response[j]["count"]) > 4:
+                    result.append(response[j])
+                else:
+                    pass
+
+            for i in range(len(result)):
+                n = result[i]["stock_name"]
+                if weekday > 4 :
+                    try:
+                        data = self.stock_naver_sise(n)
+                        p = data[0]["sise"]
+                        r = float(data[0]["dungrak"])
+                        c = result[i]["count"]
+                        s = data[0]["start_price"]
+                        code = self.stock_code(n)
+                    except:
+                        p = "error"
+                        r = 0
+                        c = "error"
+                        s = "error"
+                    today_list.append({"stock_name":n, "sise":p, "dungrak":0, "start_price":'-',"code":code,"time":"주 말"})
+
+                elif weekday < 5 and int(time[:2]) > 8 and int(time[:2]) < 16:
+                    try:
+                        data = self.stock_naver_sise(n)
+                        p = data[0]["sise"]
+                        r = float(data[0]["dungrak"])
+                        c = result[i]["count"]
+                        s = data[0]["start_price"]
+                        code = self.stock_code(n)
+                    except:
+                        p = "error"
+                        r = 0
+                        c = "error"
+                        s = "error"
+                    today_list.append({"stock_name":n, "sise":p, "dungrak":r, "start_price":s,"code":code,"time":time})
+                else:
+                    try:
+                        data = self.stock_naver_sise(n)
+                        p = data[0]["sise"]
+                        r = float(data[0]["dungrak"])
+                        c = result[i]["count"]
+                        s = data[0]["start_price"]
+                        code = self.stock_code(n)
+                    except:
+                        p = "error"
+                        r = 0
+                        c = "error"
+                        s = "error"
+                    today_list.append({"stock_name":n, "sise":p, "dungrak":0, "start_price":'-',"code":code,"time":"장마감"})
         except:
-            call_sql = "select stock_name , count from blog_stock_" + yester_day
-            self.curs.execute(call_sql)
-
-        response = self.curs.fetchall()
-        response = sorted(response, key=lambda t:(int(t["count"])), reverse=True)[:15]
-        result = []
-        for j in range(len(response)):
-            if int(response[j]["count"]) > 4:
-                result.append(response[j])
-            else:
-                pass
-
-        for i in range(len(result)):
-            n = result[i]["stock_name"]
-            if weekday > 4 :
-                try:
-                    data = self.stock_naver_sise(n)
-                    p = data[0]["sise"]
-                    r = float(data[0]["dungrak"])
-                    c = result[i]["count"]
-                    s = data[0]["start_price"]
-                    code = self.stock_code(n)
-                except:
-                    p = "error"
-                    r = 0
-                    c = "error"
-                    s = "error"
-                today_list.append({"stock_name":n, "sise":p, "dungrak":0, "start_price":'-',"code":code,"time":"주 말"})
-
-            elif weekday < 5 and int(time[:2]) > 8 and int(time[:2]) < 16:
-                try:
-                    data = self.stock_naver_sise(n)
-                    p = data[0]["sise"]
-                    r = float(data[0]["dungrak"])
-                    c = result[i]["count"]
-                    s = data[0]["start_price"]
-                    code = self.stock_code(n)
-                except:
-                    p = "error"
-                    r = 0
-                    c = "error"
-                    s = "error"
-                today_list.append({"stock_name":n, "sise":p, "dungrak":r, "start_price":s,"code":code,"time":time})
-            else:
-                try:
-                    data = self.stock_naver_sise(n)
-                    p = data[0]["sise"]
-                    r = float(data[0]["dungrak"])
-                    c = result[i]["count"]
-                    s = data[0]["start_price"]
-                    code = self.stock_code(n)
-                except:
-                    p = "error"
-                    r = 0
-                    c = "error"
-                    s = "error"
-                today_list.append({"stock_name":n, "sise":p, "dungrak":0, "start_price":'-',"code":code,"time":"장마감"})
+            today_list.append({"stock_name":"None", "sise":"None", "dungrak":0, "start_price":'-',"code":"","time":"장마감"})
 
         return today_list
 
@@ -185,7 +188,7 @@ class stock_future():
             list.append({"market": "KOSPI", "indice": kospi_index, "rate": float(kospi_dungrak), "time": "장마감"})
             list.append({"market": "KOSDAQ", "indice": kosdaq_index, "rate": float(kosdaq_dungrak), "time": "장마감"})
 
-        elif int(time[:2]) > 8 and int(time[:2]) < 17:
+        elif int(time[:2]) > 7 and int(time[:2]) < 17:
             list.append({"market": "KOSPI", "indice": kospi_index, "rate": float(kospi_dungrak),"time":time})
             list.append({"market": "KOSDAQ", "indice": kosdaq_index, "rate": float(kosdaq_dungrak),"time":time})
         else:

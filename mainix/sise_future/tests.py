@@ -193,15 +193,11 @@ def blog_multi_and_dbSave(keyword):
     return keyword + " Blog Bigdata Analysis for Stock Save Complete"
 
 if __name__=="__main__":
-    code =""
     user_agent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.146 Whale/2.6.90.18 Safari/537.36'
     headers = {'User-Agent': user_agent}
-    url = "https://finance.naver.com/item/coinfo.nhn?code=500015"
+    url = "https://emp.koscom.co.kr/home/info/issue/"
     source = requests.get(url, headers=headers).text  # requests 모듈을 통해 텍스트로 끌어옴
     soup = BeautifulSoup(source, 'html.parser')
-    no_today = soup.find("p", {"class": "no_today"})
-    no_exday = soup.find("p", {"class": "no_exday"})
-    index_value = soup.find("div",{"class":"fixed-table-container-inner"})
-    sise = no_today.find("span", {"class": "blind"}).text
-    price_table = soup.find("table")
+    kospi = soup.find("div", {"data-v-32e0b8e9 class": "table-box"})
+    kosdaq = soup.find("li", {"onmouseover": "moveIndex('tab_sel2')"})
     print(soup)
